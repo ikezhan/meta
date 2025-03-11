@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meta Glasses - AI-Powered Nutrition Tracking</title>
+  <style>
+    /* Base Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      background-color: #000;
+      color: #fff;
+      line-height: 1.6;
+    }
+    
+    h1, h2, h3, h4, h5, h6 {
+      margin-bottom: 0.5em;
+    }
+    
+    p {
+      margin-bottom: 1em;
+    }
+    
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    
+    /* Hero Section */
+    .hero {
+      position: relative;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    
+    .hero-video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.5;
+      z-index: 0;
+    }
+    
+    .hero-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.7), rgba(0,0,0,0.3));
+      z-index: 1;
+    }
+    
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      max-width: 800px;
+      padding: 0 20px;
+    }
+    
+    .hero-title {
+      font-size: 4rem;
+      font-weight: bold;
+      margin-bottom: 20px;
+      background: linear-gradient(to right, #60a5fa, #a855f7);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    
+    .hero-subtitle {
+      font-size: 1.5rem;
+      color: #e5e7eb;
+      margin-bottom: 30px;
+    }
+    
+    /* Section Styles */
+    .section {
+      padding: 80px 0;
+    }
+    
+    .section-dark {
+      background-color: #000;
+    }
+    
+    .section-gradient {
+      background: linear-gradient(to bottom, #000, #111827);
+    }
+    
+    .section-title {
+      font-size: 2.5rem;
+      text-align: center;
+      margin-bottom: 60px;
+      background: linear-gradient(to right, #60a5fa, #a855f7);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    
+    /* Card Styles */
+    .card {
+      background: linear-gradient(to bottom right, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.1));
+      border: 1px solid #1f2937;
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 20px;
+      backdrop-filter: blur(8px);
+    }
+    
+    .card-title {
+      font-size: 1.5rem;
+      margin-bottom: 16px;
+    }
+    
+    .card-blue {
+      color: #60a5fa;
+    }
+    
+    .card-purple {
+      color: #a855f7;
+    }
+    
+    /* Grid Layout */
+    .grid {
+      display: grid;
+      gap: 30px;
+    }
+    
+    .grid-2 {
+      grid-template-columns: 1fr;
+    }
+    
+    .grid-3 {
+      grid-template-columns: 1fr;
+    }
+    
+    .grid-6 {
+      grid-template-columns: 1fr;
+    }
+    
+    @media (min-width: 768px) {
+      .grid-2 {
+        grid-template-columns: 1fr 1fr;
+      }
+      
+      .grid-3 {
+        grid-template-columns: 1fr 1fr 1fr;
+      }
+      
+      .grid-6 {
+        grid-template-columns: repeat(6, 1fr);
+      }
+    }
+    
+    /* Flex Layout */
+    .flex {
+      display: flex;
+      flex-wrap: wrap;
+    }
+    
+    .flex-col {
+      flex-direction: column;
+    }
+    
+    .items-center {
+      align-items: center;
+    }
+    
+    .justify-center {
+      justify-content: center;
+    }
+    
+    .gap-8 {
+      gap: 2rem;
+    }
+    
+    /* List Styles */
+    ul {
+      list-style: none;
+    }
+    
+    .list-item {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 12px;
+    }
+    
+    .list-marker {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-right: 12px;
+      margin-top: 8px;
+      flex-shrink: 0;
+    }
+    
+    .marker-blue {
+      background-color: #60a5fa;
+    }
+    
+    .marker-purple {
+      background-color: #a855f7;
+    }
+    
+    .marker-green {
+      background-color: #4ade80;
+    }
+    
+    /* Image Styles */
+    .img-rounded {
+      width: 100%;
+      height: 400px;
+      object-fit: cover;
+      border-radius: 16px;
+    }
+    
+    /* Flow Chart Styles */
+    .flow-step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+    
+    .flow-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: linear-gradient(to bottom right, #60a5fa, #a855f7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      margin-bottom: 16px;
+      position: relative;
+      z-index: 2;
+    }
+    
+    .flow-line {
+      position: absolute;
+      top: 32px;
+      left: 50%;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(to right, #60a5fa, #a855f7);
+      z-index: 1;
+    }
+    
+    .flow-content {
+      text-align: center;
+      max-width: 200px;
+    }
+    
+    .flow-title {
+      font-weight: bold;
+      font-size: 1.125rem;
+      margin-bottom: 8px;
+    }
+    
+    .flow-desc {
+      font-size: 0.875rem;
+      color: #9ca3af;
+    }
+    
+    .mobile-arrow {
+      height: 32px;
+      width: 2px;
+      background: linear-gradient(to bottom, #60a5fa, #a855f7);
+      margin: 8px 0;
+    }
+    
+    @media (min-width: 768px) {
+      .mobile-arrows {
+        display: none;
+      }
+      
+      .flow-line {
+        display: block;
+      }
+    }
+    
+    @media (max-width: 767px) {
+      .flow-line {
+        display: none;
+      }
+      
+      .mobile-arrows {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+    
+    /* Button Styles */
+    .btn {
+      display: inline-block;
+      padding: 16px 32px;
+      border-radius: 9999px;
+      font-size: 1.125rem;
+      font-weight: 600;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-primary {
+      background-color: #fff;
+      color: #000;
+    }
+    
+    .btn-primary:hover {
+      background-color: #f3f4f6;
+    }
+    
+    .btn-outline {
+      background-color: transparent;
+      border: 2px solid #fff;
+      color: #fff;
+    }
+    
+    .btn-outline:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+    
+    .btn-container {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      justify-content: center;
+    }
+    
+    @media (min-width: 768px) {
+      .btn-container {
+        flex-direction: row;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Hero Section -->
+  <section class="hero">
+    <video class="hero-video" autoplay loop muted playsinline poster="public/images/hero-poster.webp">
+      <source src="public/videos/hero.mp4" type="video/mp4">
+    </video>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1 class="hero-title">Meta Glasses</h1>
+      <p class="hero-subtitle">AI-Powered Nutrition Tracking for a Healthier Tomorrow</p>
+    </div>
+  </section>
+
+  <!-- Decision Makers & Value Proposition -->
+  <section class="section section-gradient">
+    <div class="container">
+      <h2 class="section-title">Decision Makers & Value Proposition</h2>
+      
+      <!-- Tabs for switching between DTC and B2B2C -->
+      <div style="display: flex; justify-content: center; margin-bottom: 40px;">
+        <div style="display: flex; background: rgba(31, 41, 55, 0.5); border-radius: 9999px; padding: 4px;">
+          <button id="dtcTab" class="tab-btn tab-active" style="padding: 12px 24px; border-radius: 9999px; border: none; background: transparent; color: #fff; font-weight: 600; cursor: pointer; transition: all 0.3s ease;">Direct to Consumer</button>
+          <button id="b2bTab" class="tab-btn" style="padding: 12px 24px; border-radius: 9999px; border: none; background: transparent; color: #fff; font-weight: 600; cursor: pointer; transition: all 0.3s ease;">Enterprise & Healthcare</button>
+        </div>
+      </div>
+      
+      <!-- DTC Section -->
+      <div id="dtcSection" class="tab-content" style="display: block;">
+        <div class="card" style="margin-bottom: 30px; overflow: hidden;">
+          <div style="display: flex; flex-direction: column; gap: 30px;">
+            <div style="display: flex; flex-direction: column; gap: 30px;">
+              <h3 style="font-size: 1.875rem; font-weight: bold; color: #60a5fa; margin-bottom: 0;">Direct to Consumer</h3>
+              <p style="color: #9ca3af; margin-bottom: 0;">Selling directly to individual consumers via online channels, retail, and partnerships with influencers & fitness brands.</p>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 1fr; gap: 30px;">
+              <div>
+                <img src="public/images/d2c-persona.webp" alt="Health enthusiast using Meta Glasses" class="img-rounded" style="width: 100%; height: auto; max-height: 400px; object-fit: cover;">
+              </div>
+              
+              <div style="display: grid; grid-template-columns: 1fr; gap: 20px;">
+                <div class="card" style="background: linear-gradient(to bottom right, rgba(37, 99, 235, 0.1), rgba(37, 99, 235, 0.05));">
+                  <h4 class="card-title" style="color: #60a5fa; display: flex; align-items: center;">
+                    <span style="background: #60a5fa; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 12px;">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                      </svg>
+                    </span>
+                    Primary Decision Makers
+                  </h4>
+                  <ul>
+                    <li class="list-item">
+                      <span class="list-marker marker-blue"></span>
+                      <span><strong>Health-Conscious Professionals:</strong> Ages 25-45, tech-savvy, using fitness apps & wearables</span>
+                    </li>
+                    <li class="list-item">
+                      <span class="list-marker marker-blue"></span>
+                      <span><strong>Diabetes Patients:</strong> Type 1 & 2, actively managing diet & glucose levels</span>
+                    </li>
+                    <li class="list-item">
+                      <span class="list-marker marker-blue"></span>
+                      <span><strong>Parents:</strong> Managing children's Type 1 diabetes care</span>
+                    </li>
+                  </ul>
+                </div>
+                
+                <div class="card" style="background: linear-gradient(to bottom right, rgba(16, 185, 129, 0.1), rgba(16, 185, 129, 0.05));">
+                  <h4 class="card-title" style="color: #4ade80; display: flex; align-items: center;">
+                    <span style="background: #4ade80; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 12px;">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                      </svg>
+                    </span>
+                    Value Proposition
+                  </h4>
+                  <ul>
+                    <li class="list-item">
+                      <span class="list-marker marker-green"></span>
+                      <span><strong>Real-time nutrition analysis:</strong> Instantly analyze meals, track macros effortlessly</span>
+                    </li>
+                    <li class="list-item">
+                      <span class="list-marker marker-green"></span>
+                      <span><strong>Seamless tracking:</strong> Zero manual input required, eliminating tracking fatigue</span>
+                    </li>
+                    <li class="list-item">
+                      <span class="list-marker marker-green"></span>
+                      <span><strong>AI personalization:</strong> Customized recommendations based on dietary preferences & health goals</span>
+                    </li>
+                    <li class="list-item">
+                      <span class="list-marker marker-green"></span>
+                      <span><strong>Ecosystem integration:</strong> Works with MyFitnessPal, WHOOP, Dexcom CGM, and more</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="card">
+          <h4 class="card-title" style="color: #60a5fa; display: flex; align-items: center;">
+            <span style="background: #60a5fa; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 12px;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 20v-6M6 20V10M18 20V4"></path>
+              </svg>
+            </span>
+            Sales & Marketing Tactics
+          </h4>
+          <div class="grid grid-2">
+            <div>
+              <h5 style="font-weight: 600; color: #60a5fa; margin-bottom: 8px; display: flex; align-items: center;">
+                <span style="width: 6px; height: 6px; background: #60a5fa; border-radius: 50%; margin-right: 8px;"></span>
+                Social Proof & Influencer Marketing
+              </h5>
+              <ul>
+                <li class="list-item">
+                  <span class="list-marker marker-blue" style="width: 4px; height: 4px;"></span>
+                  <span>TikTok, Instagram, YouTube creators</span>
+                </li>
+                <li class="list-item">
+                  <span class="list-marker marker-blue" style="width: 4px; height: 4px;"></span>
+                  <span>Before & after comparisons, "What I eat in a day" challenges</span>
+                </li>
+              </ul>
+            </div>
+            <div>
+              <h5 style="font-weight: 600; color: #60a5fa; margin-bottom: 8px; display: flex; align-items: center;">
+                <span style="width: 6px; height: 6px; background: #60a5fa; border-radius: 50%; margin-right: 8px;"></span>
+                Partnerships & Bundling
+              </h5>
+              <ul>
+                <li class="list-item">
+                  <span class="list-marker marker-blue" style="width: 4px; height: 4px;"></span>
+                  <span>MyFitnessPal, Noom, WHOOP, Peloton ecosystem integration</span>
+                </li>
+                <li class="list-item">
+                  <span class="list-marker marker-blue" style="width: 4px; height: 4px;"></span>
+                  <span>Potential Apple integration (Apple Health, Vision Pro)</span>
+                </li>
+              </ul>
+            </div>
+            <div>
+              <h5 style="font-weight: 600; color: #60a5fa; margin-bottom: 8px; display: flex; align-items: center;">
+                <span style="width: 6px; height: 6px; background: #60a5fa; border-radius: 50%; margin-right: 8px;"></span>
+                Subscription Model
+              </h5>
+              <ul>
+                <li class="list-item">
+                  <span class="list-marker marker-blue" style="width: 4px; height: 4px;"></span>
+                  <span>Basic version free, premium features subscription</span>
+                </li>
+                <li class="list-item">
+                  <span class="list-marker marker-blue" style="width: 4px; height: 4px;"></span>
+                  <span>Advanced insights, AI meal planning, doctor consultations</span>
+                </li>
+              </ul>
+            </div>
+            <div>
+              <h5 style="font-weight: 600; color: #60a5fa; margin-bottom: 8px; display: flex; align-items: center;">
+                <span style="width: 6px; height: 6px; background: #60a5fa; border-radius: 50%; margin-right: 8px;"></span>
+                Direct Sales
+              </h5>
+              <ul>
+                <li class="list-item">
+                  <span class="list-marker marker-blue" style="width: 4px; height: 4px;"></span>
+                  <span>Meta Store, Amazon, Best Buy, Apple Store</span>
+                </li>
+                <li class="list-item">
+                  <span class="list-marker marker-blue" style="width: 4px; height: 4px;"></span>
+                  <span>Targeted ads on Instagram, Facebook, Google</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- B2B2C Section -->
+      <div id="b2bSection" class="tab-content" style="display: none;">
+        <div class="card" style="margin-bottom: 30px; overflow: hidden;">
+          <div style="display: flex; flex-direction: column; gap: 30px;">
+            <div style="display: flex; flex-direction: column; gap: 30px;">
+              <h3 style="font-size: 1.875rem; font-weight: bold; color: #a855f7; margin-bottom: 0;">Enterprise & Healthcare</h3>
+              <p style="color: #9ca3af; margin-bottom: 0;">Selling via corporate wellness programs, insurance companies, and healthcare providers to reach employees & patients.</p>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 1fr; gap: 30px;">
+              <div>
+                <img src="public/images/b2b2c-solution.webp" alt="Healthcare provider dashboard" class="img-rounded" style="width: 100%; height: auto; max-height: 400px; object-fit: cover;">
+              </div>
+              
+              <div style="display: grid; grid-template-columns: 1fr; gap: 20px;">
+                <div class="card" style="background: linear-gradient(to bottom right, rgba(139, 92, 246, 0.1), rgba(139, 92, 246, 0.05));">
+                  <h4 class="card-title" style="color: #a855f7; display: flex; align-items: center;">
+                    <span style="background: #a855f7; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 12px;">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                      </svg>
+                    </span>
+                    Key Decision Makers
+                  </h4>
+                  <ul>
+                    <li class="list-item">
+                      <span class="list-marker marker-purple"></span>
+                      <span><strong>Healthcare Providers:</strong> Endocrinologists, nutritionists, diabetes educators</span>
+                    </li>
+                    <li class="list-item">
+                      <span class="list-marker marker-purple"></span>
+                      <span><strong>Insurance Companies:</strong> Wellness program directors, care management leads</span>
+                    </li>
+                    <li class="list-item">
+                      <span class="list-marker marker-purple"></span>
+                      <span><strong>Corporate Benefits:</strong> HR directors, wellness coordinators</span>
+                    </li>
+                  </ul>
+                </div>
+                
+                <div class="card" style="background: linear-gradient(to bottom right, rgba(16, 185, 129, 0.1), rgba(16, 185, 129, 0.05));">
+                  <h4 class="card-title" style="color: #4ade80; display: flex; align-items: center;">
+                    <span style="background: #4ade80; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 12px;">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"></path>
+                      </svg>
+                    </span>
+                    ROI & Benefits
+                  </h4>
+                  <ul>
+                    <li class="list-item">
+                      <span class="list-marker marker-green"></span>
+                      <span><strong>Preventive Care Impact:</strong> Early intervention capabilities through real-time monitoring help reduce diabetes-related complications and hospitalizations</span>
+                    </li>
+                    <li class="list-item">
+                      <span class="list-marker marker-green"></span>
+                      <span><strong>Cost Efficiency:</strong> Potential for substantial healthcare cost savings through improved dietary management and reduced medical interventions</span>
+                    </li>
+                    <li class="list-item">
+                      <span class="list-marker marker-green"></span>
+                      <span><strong>Program Engagement:</strong> Interactive technology and real-time feedback drive significantly higher participation in wellness programs</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="card">
+          <h4 class="card-title" style="color: #a855f7; display: flex; align-items: center;">
+            <span style="background: #a855f7; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 12px;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 20v-6M6 20V10M18 20V4"></path>
+              </svg>
+            </span>
+            B2B2C Sales Tactics
+          </h4>
+          <div class="grid grid-2">
+            <div>
+              <h5 style="font-weight: 600; color: #a855f7; margin-bottom: 8px; display: flex; align-items: center;">
+                <span style="width: 6px; height: 6px; background: #a855f7; border-radius: 50%; margin-right: 8px;"></span>
+                Enterprise Pilots
+              </h5>
+              <ul>
+                <li class="list-item">
+                  <span class="list-marker marker-purple" style="width: 4px; height: 4px;"></span>
+                  <span>Free trials to corporate wellness programs</span>
+                </li>
+                <li class="list-item">
+                  <span class="list-marker marker-purple" style="width: 4px; height: 4px;"></span>
+                  <span>Measurable impact on employee health & engagement</span>
+                </li>
+              </ul>
+            </div>
+            <div>
+              <h5 style="font-weight: 600; color: #a855f7; margin-bottom: 8px; display: flex; align-items: center;">
+                <span style="width: 6px; height: 6px; background: #a855f7; border-radius: 50%; margin-right: 8px;"></span>
+                Case Studies & Whitepapers
+              </h5>
+              <ul>
+                <li class="list-item">
+                  <span class="list-marker marker-purple" style="width: 4px; height: 4px;"></span>
+                  <span>Data proving ROI for insurers & employers</span>
+                </li>
+                <li class="list-item">
+                  <span class="list-marker marker-purple" style="width: 4px; height: 4px;"></span>
+                  <span>Reduction in employee BMI & lower healthcare claims</span>
+                </li>
+              </ul>
+            </div>
+            <div>
+              <h5 style="font-weight: 600; color: #a855f7; margin-bottom: 8px; display: flex; align-items: center;">
+                <span style="width: 6px; height: 6px; background: #a855f7; border-radius: 50%; margin-right: 8px;"></span>
+                Bulk Pricing & Subscriptions
+              </h5>
+              <ul>
+                <li class="list-item">
+                  <span class="list-marker marker-purple" style="width: 4px; height: 4px;"></span>
+                  <span>Employers/insurers buy in bulk with discounts</span>
+                </li>
+                <li class="list-item">
+                  <span class="list-marker marker-purple" style="width: 4px; height: 4px;"></span>
+                  <span>Subsidized for users or employee/patient discounts</span>
+                </li>
+              </ul>
+            </div>
+            <div>
+              <h5 style="font-weight: 600; color: #a855f7; margin-bottom: 8px; display: flex; align-items: center;">
+                <span style="width: 6px; height: 6px; background: #a855f7; border-radius: 50%; margin-right: 8px;"></span>
+                HSA/FSA Eligibility
+              </h5>
+              <ul>
+                <li class="list-item">
+                  <span class="list-marker marker-purple" style="width: 4px; height: 4px;"></span>
+                  <span>Work with IRS for tax-free healthcare spending</span>
+                </li>
+                <li class="list-item">
+                  <span class="list-marker marker-purple" style="width: 4px; height: 4px;"></span>
+                  <span>Integration with healthcare system reimbursements</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Add JavaScript for tab functionality -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const dtcTab = document.getElementById('dtcTab');
+      const b2bTab = document.getElementById('b2bTab');
+      const dtcSection = document.getElementById('dtcSection');
+      const b2bSection = document.getElementById('b2bSection');
+      
+      dtcTab.addEventListener('click', function() {
+        dtcSection.style.display = 'block';
+        b2bSection.style.display = 'none';
+        dtcTab.classList.add('tab-active');
+        b2bTab.classList.remove('tab-active');
+        dtcTab.style.background = 'rgba(59, 130, 246, 0.2)';
+        b2bTab.style.background = 'transparent';
+      });
+      
+      b2bTab.addEventListener('click', function() {
+        dtcSection.style.display = 'none';
+        b2bSection.style.display = 'block';
+        b2bTab.classList.add('tab-active');
+        dtcTab.classList.remove('tab-active');
+        b2bTab.style.background = 'rgba(139, 92, 246, 0.2)';
+        dtcTab.style.background = 'transparent';
+      });
+      
+      // Initialize
+      dtcTab.style.background = 'rgba(59, 130, 246, 0.2)';
+    });
+  </script>
+  
+  <!-- Continuous Engagement System -->
+  <section class="section section-dark">
+    <div class="container">
+      <h2 class="section-title">Continuous Engagement System</h2>
+      
+      <div class="grid grid-2" style="margin-bottom: 40px;">
+        <div class="card" style="position: relative; overflow: hidden;">
+          <div style="position: absolute; top: 0; right: 0; width: 128px; height: 128px; opacity: 0.1;">
+            <img src="public/icons/sync-icon.svg" alt="Sync Icon" style="width: 100%; height: 100%;">
+          </div>
+          <h3 class="card-title card-blue">Real-Time Data Sync</h3>
+          <ul>
+            <li class="list-item">
+              <span class="list-marker marker-blue"></span>
+              <span>Automatic sync with healthcare provider EMR systems</span>
+            </li>
+            <li class="list-item">
+              <span class="list-marker marker-blue"></span>
+              <span>Integration with CGM devices and fitness apps</span>
+            </li>
+            <li class="list-item">
+              <span class="list-marker marker-blue"></span>
+              <span>HIPAA-compliant data sharing with care team</span>
+            </li>
+          </ul>
+        </div>
+        
+        <div class="card" style="position: relative; overflow: hidden;">
+          <div style="position: absolute; top: 0; right: 0; width: 128px; height: 128px; opacity: 0.1;">
+            <img src="public/icons/engagement-icon.svg" alt="Engagement Icon" style="width: 100%; height: 100%;">
+          </div>
+          <h3 class="card-title card-purple">Smart Engagement System</h3>
+          <ul>
+            <li class="list-item">
+              <span class="list-marker marker-purple"></span>
+              <span>AI-powered adherence monitoring and predictions</span>
+            </li>
+            <li class="list-item">
+              <span class="list-marker marker-purple"></span>
+              <span>Automated reminders via app, SMS, or phone calls</span>
+            </li>
+            <li class="list-item">
+              <span class="list-marker marker-purple"></span>
+              <span>Care team alerts for intervention when needed</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+      
+      <!-- Engagement Flow Chart -->
+      <div class="card">
+        <h3 class="card-title" style="text-align: center; margin-bottom: 40px;">Engagement Flow</h3>
+        
+        <div class="grid grid-6" style="position: relative;">
+          <!-- Step 1: User Activity -->
+          <div class="flow-step">
+            <div class="flow-icon">👤</div>
+            <div class="flow-line"></div>
+            <div class="flow-content">
+              <h4 class="flow-title">User Activity</h4>
+              <p class="flow-desc">Real-time nutrition tracking through Meta Glasses</p>
+            </div>
+          </div>
+          
+          <!-- Step 2: Data Analysis -->
+          <div class="flow-step">
+            <div class="flow-icon">📊</div>
+            <div class="flow-line"></div>
+            <div class="flow-content">
+              <h4 class="flow-title">Data Analysis</h4>
+              <p class="flow-desc">AI processes nutrition data and adherence patterns</p>
+            </div>
+          </div>
+          
+          <!-- Step 3: Provider Dashboard -->
+          <div class="flow-step">
+            <div class="flow-icon">🔄</div>
+            <div class="flow-line"></div>
+            <div class="flow-content">
+              <h4 class="flow-title">Provider Dashboard</h4>
+              <p class="flow-desc">Healthcare team monitors patient progress</p>
+            </div>
+          </div>
+          
+          <!-- Step 4: Smart Alerts -->
+          <div class="flow-step">
+            <div class="flow-icon">🤖</div>
+            <div class="flow-line"></div>
+            <div class="flow-content">
+              <h4 class="flow-title">Smart Alerts</h4>
+              <p class="flow-desc">AI predicts and flags potential issues</p>
+            </div>
+          </div>
+          
+          <!-- Step 5: Engagement -->
+          <div class="flow-step">
+            <div class="flow-icon">📱</div>
+            <div class="flow-line"></div>
+            <div class="flow-content">
+              <h4 class="flow-title">Engagement</h4>
+              <p class="flow-desc">Automated reminders and notifications</p>
+            </div>
+          </div>
+          
+          <!-- Step 6: Care Team -->
+          <div class="flow-step">
+            <div class="flow-icon">👥</div>
+            <div class="flow-content">
+              <h4 class="flow-title">Care Team</h4>
+              <p class="flow-desc">Personalized intervention when needed</p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Mobile Arrows -->
+        <div class="mobile-arrows">
+          <div class="mobile-arrow"></div>
+          <div class="mobile-arrow"></div>
+          <div class="mobile-arrow"></div>
+          <div class="mobile-arrow"></div>
+          <div class="mobile-arrow"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- CTA Section -->
+  <section class="section" style="background: linear-gradient(to bottom, #111827, #000);">
+    <div class="container" style="max-width: 800px; text-align: center;">
+      <h2 style="font-size: 2.5rem; font-weight: bold; margin-bottom: 20px;">
+        Transform Your Health Journey
+      </h2>
+      <p style="font-size: 1.25rem; color: #9ca3af; margin-bottom: 40px;">
+        Join the future of nutrition tracking with Meta Glasses
+      </p>
+      <div class="btn-container">
+        <a href="#" class="btn btn-primary">Request Demo</a>
+        <a href="#" class="btn btn-outline">Contact Sales</a>
+      </div>
+    </div>
+  </section>
+</body>
+</html> 
